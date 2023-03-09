@@ -1,0 +1,37 @@
+CREATE TABLE Item (
+	ItemNum NUMBER, 
+	ItemDescription VARCHAR2(200),
+	CONSTRAINT Item_PK PRIMARY KEY(ItemNum)
+);
+
+CREATE TABLE Product (
+	ProductID NUMBER,
+	ProductDescription VARCHAR2(200),
+	CONSTRAINT Product_PK PRIMARY KEY(ProductID)
+);
+
+CREATE TABLE Receipt (
+	ReceiptNumber NUMBER,
+	SalesDate DATE,
+	CONSTRAINT Receipt_PK PRIMARY KEY(ReceiptNumber)
+);
+
+CREATE TABLE Used (
+	ProductID NUMBER,
+	ItemNum NUMBER,
+	QuantityUsed NUMBER,
+	CONSTRAINT Used_PK PRIMARY KEY(ProductID, ItemNum),
+	CONSTRAINT Used_FK1 FOREIGN KEY(ProductID) REFERENCES Product(ProductID),
+	CONSTRAINT Used_FK2 FOREIGN KEY(ItemNum) REFERENCES Item(ItemNum),
+	CONSTRAINT QuantityUsed_CK CHECK(QuantityUsed >= 0)
+);
+
+CREATE TABLE Sold (
+	ProductID NUMBER,
+	ReceiptNumber NUMBER,
+	QuantitySold NUMBER,
+	CONSTRAINT Sold_PK PRIMARY KEY(ProductID, ReceiptNumber),
+	CONSTRAINT Sold_FK1 FOREIGN KEY(ProductID) REFERENCES Product(ProductID),
+	CONSTRAINT Sold_FK2 FOREIGN KEY(ReceiptNumber) REFERENCES Receipt(ReceiptNumber),
+	CONSTRAINT QuantitySold_CK CHECK(QuantitySold >= 0)
+);
